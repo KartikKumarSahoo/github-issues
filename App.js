@@ -9,8 +9,9 @@ export default class App extends React.Component {
     this.state = {
       dataSource: this.ds.cloneWithRows([]),
       searchText: '',
-      status: '',
-      isLoading: false,
+      status:     '',
+      error:      false,
+      isLoading:  false,
     };
 
     this.onSearch = this.onSearch.bind(this);
@@ -32,11 +33,11 @@ export default class App extends React.Component {
           data = _.cloneDeep(JSON.parse(response._bodyText));
           issues = _.map(data, (issue) => {
             return {
-              id: issue.id,
-              title: issue.title,
+              id:     issue.id,
+              title:  issue.title,
               author: issue.user.login,
-              date: issue.created_at,
-              state: issue.state,
+              date:   issue.created_at,
+              state:  issue.state,
             };
           });
           status = `${data.length} issues found.`;
@@ -47,7 +48,7 @@ export default class App extends React.Component {
           dataSource: this.ds.cloneWithRows(issues),
           status,
           error,
-          isLoading: false,
+          isLoading:  false,
         });
       })
       .catch((error) => {
@@ -66,7 +67,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <View style={{flex: 1, paddingTop: 22, paddingBottom: 60}}>
+      <View style={styles.appContainer}>
         <View><Text style={styles.heading}>GitHub Issue Fetcher</Text></View>
         <View>
           <Text>Enter GitHub Repo name:</Text>
@@ -116,11 +117,10 @@ const GitHubIssue = ({issue}) => (
 )
 
 const styles = StyleSheet.create({
-  container: {
+  appContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 22,
+    paddingBottom: 60
   },
   heading: {
     fontWeight: 'bold',
@@ -162,6 +162,8 @@ const styles = StyleSheet.create({
   issueContainer: {
     borderWidth: 1,
     padding: 2,
+    marginLeft: 2,
+    marginRight: 2,
     marginBottom: 5,
   }
 });
